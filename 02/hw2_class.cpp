@@ -24,7 +24,6 @@ public:
     ~Calc(){
         s.clear();
     }
-
 };
 
 int64_t Calc::calculate(){
@@ -67,7 +66,7 @@ int64_t Calc::multiplier(){
     while(isdigit(c)){
         digit = true;
         number = number * i + (c - '0');
-        ++i;
+        i *= 10;
         c = get_c();
     }
     if(! digit)
