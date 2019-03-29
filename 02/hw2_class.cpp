@@ -13,16 +13,18 @@
 
 class Calc{
     std::string s;
+    std::string::iterator s_it;
     char c;
 
 public:
-    Calc(const char *expr): s(expr), c('0') {}
+    Calc(const char *expr): s(expr){
+        s_it = s.begin();
+        c = '0';}
     int64_t calculate();
     int64_t summand();
     int64_t multiplier();
     char get_c();
     ~Calc(){
-        s.clear();
     }
 };
 
@@ -77,7 +79,7 @@ int64_t Calc::multiplier(){
 }
 
 char Calc::get_c(){
-    static std::string::iterator s_it = s.begin();
+
     while (s_it != s.end() && isspace(*s_it))
         ++s_it;
     if(s_it != s.end()){
@@ -91,20 +93,19 @@ char Calc::get_c(){
 
 
 int main(int argc, char* argv[]){
-    int64_t result = 0;
-
     try{
         if(argc != 2)
             throw std::exception();
+        int64_t result = 0;
         Calc expression(argv[1]);
         result = expression.calculate();
+        std::cout << result << std::endl;
     }
-    catch (std::exception){
+    catch (std::exception &err){
         std::cout << "error" << std::endl;
         return 1;
     }
 
-    std::cout << result << std::endl;
     return 0;
 }
 
