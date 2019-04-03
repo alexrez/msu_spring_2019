@@ -83,7 +83,7 @@ Row Matrix::operator[](const size_t i){
 
 Matrix& Matrix::operator*=(const int n){
     for(size_t i = 0; i < rows*columns; ++i)
-        wholeMatrix[i] *= 2;
+        wholeMatrix[i] *= n;
     return *this;
 }
 
