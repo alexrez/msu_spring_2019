@@ -14,19 +14,19 @@ void merge(const std::string& source, const std::string& target, const size_t ch
     std::ofstream target_file(target, std::ios::binary);
 
     source_file.seekg(0, std::ios::end);
-    size_t stop = source_file.tellg();
+    const size_t stop = source_file.tellg();
 
     size_t i = 1;
     while(i < chunks){
         uint64_t number_1;
         size_t ind_1 = 0;
-        size_t offset_1 = (i - 1) * chunksize * sizeof(uint64_t);
+        const size_t offset_1 = (i - 1) * chunksize * sizeof(uint64_t);
         source_file.seekg(offset_1);
         source_file.read((char *) &number_1, sizeof(number_1));
 
         uint64_t number_2;
         size_t ind_2 = 0;
-        size_t offset_2 = i * chunksize * sizeof(uint64_t);
+        const size_t offset_2 = i * chunksize * sizeof(uint64_t);
         source_file.seekg(offset_2);
         source_file.read((char *) &number_2, sizeof(number_2));
 
@@ -86,15 +86,15 @@ void merge(const std::string& source, const std::string& target, const size_t ch
     target_file.close();
 }
 
-void final_merge(std::string& file_1, std::string& file_2, std::string& target){
+void final_merge(const std::string& file_1, const std::string& file_2, const std::string& target){
     std::ofstream file_to_sort(file_1, std::ios::binary | std::ios::app);
     file_to_sort.seekp(0, std::ios::end);
 
-    size_t chinksize = file_to_sort.tellp() / sizeof(uint64_t);
+    const size_t chinksize = file_to_sort.tellp() / sizeof(uint64_t);
     
     std::ifstream file_app(file_2, std::ios::binary);
     file_app.seekg(0, std::ios::end);
-    size_t stop = file_app.tellg();
+    const size_t stop = file_app.tellg();
     file_app.seekg(0, std::ios::beg);
     while(file_app.tellg() < stop){
         uint64_t number;
@@ -105,7 +105,7 @@ void final_merge(std::string& file_1, std::string& file_2, std::string& target){
     file_to_sort.close();
     file_app.close();
 
-    size_t chunks = 2;    
+    const size_t chunks = 2;    
     
     merge(file_1, target, chinksize, chunks);
 
@@ -118,7 +118,7 @@ void sortChunks(std::string& name, const size_t bufsize){
     std::ifstream file_to_sort(name, std::ios::binary);
     file_to_sort.seekg(0, std::ios::end);
 
-    size_t filesize = file_to_sort.tellg();
+    const size_t filesize = file_to_sort.tellg();
     size_t chunks = filesize / bufsize;
     chunks += filesize % bufsize ? 1 : 0;
     size_t chinksize = bufsize / sizeof(uint64_t);
@@ -148,10 +148,10 @@ int makeChunks(std::vector<std::string>& files, const size_t threads, const size
         return 0;
 
     file_to_sort.seekg(0, std::ios::end);
-    size_t filesize = file_to_sort.tellg();
-    size_t tempSize = filesize / threads;
-    size_t middle = tempSize > (filesize - tempSize) ? tempSize : filesize - tempSize;
-    size_t offset = middle - middle % sizeof(uint64_t);
+    const size_t filesize = file_to_sort.tellg();
+    const size_t tempSize = filesize / threads;
+    const size_t middle = tempSize > (filesize - tempSize) ? tempSize : filesize - tempSize;
+    const size_t offset = middle - middle % sizeof(uint64_t);
 
     file_to_sort.seekg(0, std::ios::beg);
 
@@ -160,7 +160,7 @@ int makeChunks(std::vector<std::string>& files, const size_t threads, const size
         if (!out)
             return i + 1;
 
-        size_t stop = file_to_sort.tellg() < offset ? offset : filesize;
+        const size_t stop = file_to_sort.tellg() < offset ? offset : filesize;
 
         while(file_to_sort.tellg() < stop){
             std::vector<uint64_t> seq_to_sort;
